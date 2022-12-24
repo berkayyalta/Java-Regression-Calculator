@@ -2,7 +2,7 @@ package Main;
 
 import java.math.BigInteger;
 import java.util.Arrays;
-
+import Math.Fraction;
 import Math.Matrix;
 import Regression.Regression;
 
@@ -10,6 +10,14 @@ public class main {
 
 	public static void main(String[] args) throws Exception {
 		
+		/*
+		Fraction f1 = new Fraction(12.0);
+		System.out.println(f1);
+		f1.pow(16);
+		System.out.println(f1);
+		*/
+		
+		/*
 		Double[][] a1 = {{1.0, 2.0}, {3.0, 5.0}};
 		Double[][] a2 = {{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 10.0}};
 		Double[][] a3 = {{1.0, 2.0}, {3.0, 4.0}};
@@ -23,6 +31,7 @@ public class main {
 		Regression regr = new Regression(x, y, 4);
 		System.out.println(regr.predict(49.0));
 		System.out.println(regr);
+		*/
 		
 	}
 	
