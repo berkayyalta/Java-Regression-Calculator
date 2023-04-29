@@ -294,7 +294,7 @@ final public class Matrix
 			}
 			else
 			{
-				ArrayList<ArrayList<BigDecimal>> AL_F = M2.toArrayList(matrix, rows, columns);
+				ArrayList<ArrayList<BigDecimal>> AL_F = M2A.toArrayList(matrix);
 				//Remove the row and the column by index
 				AL_F.remove(RN);
 				for (int remove_column = 0; remove_column < AL_F.size(); remove_column++)
@@ -302,7 +302,7 @@ final public class Matrix
 					AL_F.get(remove_column).remove(CN);
 				}
 				//Return 
-				return new Matrix(M2.toArray(AL_F));
+				return new Matrix(M2A.toArray(AL_F));
 			}
 		}
 		//Otherwise, throw exception

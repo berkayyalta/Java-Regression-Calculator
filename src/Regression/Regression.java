@@ -3,10 +3,10 @@
 package Regression;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import Math.M2;
+import Math.M2A;
 import Math.Matrix;
 
 //Class Regression
@@ -26,7 +26,7 @@ final public class Regression
 	 * @param y : y array
 	 * @param degree
 	 */
-	public Regression(double[] x, double[] y, int degree)
+	public Regression(double[] x, double[] y, int degree, int decimal_places)
 	{
 		if (x.length == y.length)
 		{
@@ -50,7 +50,7 @@ final public class Regression
 			//Calculate
 			Matrix X = x_matrix(AL);
 			Matrix Y = y_matrix(new_y);		
-			calculate(X, Y);
+			calculate(X, Y, decimal_places);
 		}
 		else
 		{
@@ -65,7 +65,7 @@ final public class Regression
 	 * @param y : y array
 	 * @param degree
 	 */
-	public Regression(ArrayList<double[]> x, double[] y, int degree)
+	public Regression(ArrayList<double[]> x, double[] y, int degree, int decimal_places)
 	{
 		//First length check
 		int x_len = x.get(0).length;
@@ -101,7 +101,7 @@ final public class Regression
 			//Calculate
 			Matrix X = x_matrix(new_x);
 			Matrix Y = y_matrix(new_y);		
-			calculate(X, Y);
+			calculate(X, Y, decimal_places);
 		}
 		else
 		{
@@ -128,14 +128,14 @@ final public class Regression
 		{
 			for (BigDecimal[] x_array : x)
 			{
-				X = M2.add_column(pow_column(x_array, d), X);
+				X = M2A.add_column(X, pow_column(x_array, d));
 			}	
 		}
 		return X;
 	}
 	
 	/**
-	 * A method to add the necessary columns to the X matrix
+	 * A method to add the powered columns to the X matrix
 	 * 
 	 * @param array : existing column of the X Matrix at index 1
 	 * @param dg 	: degree
@@ -174,7 +174,7 @@ final public class Regression
 	 * @param X : X Matrix
 	 * @param Y : Y Matrix
 	 */
-	private void calculate(Matrix X, Matrix Y)
+	private void calculate(Matrix X, Matrix Y, int decimal_places)
 	{
 		try 
 		{			
@@ -186,7 +186,7 @@ final public class Regression
 			betas = new BigDecimal[B.get_rows()];
 			for (int beta_no = 0; beta_no < betas.length; beta_no++)
 			{
-				betas[beta_no] = B.get(beta_no, 0);
+				betas[beta_no] = B.get(beta_no, 0).setScale(decimal_places, RoundingMode.HALF_UP);
 			}
 		}
 		catch (Exception e)
@@ -199,8 +199,8 @@ final public class Regression
 	/**
 	 * Predict method for normal regressions
 	 * 
-	 * @param x
-	 * @return
+	 * @param x : x value to be predicted
+	 * @return	: BigDecimal
 	 */
 	public BigDecimal predict(double x)
 	{
@@ -210,8 +210,8 @@ final public class Regression
 			BigDecimal result = betas[0];
 			for (int d = 1; d <= degree; d++)
 			{
-				x = Math.pow(x, d);
-				result = result.add(betas[d].multiply(new BigDecimal(x)));
+				double current_x = Math.pow(x, d);
+				result = result.add(betas[d].multiply(new BigDecimal(current_x)));
 			}
 			return result;
 		}
@@ -224,22 +224,24 @@ final public class Regression
 	/**
 	 * Predict method for multiple regressions
 	 * 
-	 * @param x
-	 * @return
+	 * @param x : x values to be predicted
+	 * @return	: BigDecimal
 	 */
 	public BigDecimal predict(ArrayList<Double> x)
 	{
 		//If is a multiple regression
 		if (multiple)
 		{
-			BigDecimal result = betas[0];
+			int beta_no = 0;
+			BigDecimal result = betas[beta_no];
+			beta_no++;
 			for (int d = 1; d <= degree; d++)
 			{
-				for (int item_no = 0; item_no < x.size(); item_no++)
+				for (Double num : x)
 				{
-					double new_item = x.get(item_no);
-					new_item = Math.pow(new_item, d);
-					result = result.add(betas[item_no + 1].multiply(new BigDecimal(new_item)));
+					double current_num = Math.pow(num, d);
+					result = result.add(betas[beta_no].multiply(new BigDecimal(current_num)));
+					beta_no++;
 				}
 			}
 			return result;
@@ -264,6 +266,7 @@ final public class Regression
 	 */
 	public String toString()
 	{
+		//Print regression
 		if (!multiple)
 		{
 			String str = "Y = " + betas[0] + "*X^" + 0;
@@ -273,6 +276,7 @@ final public class Regression
 			}		
 			return str;
 		}
+		//Print multiple regression
 		else
 		{
 			int beta_no = 0;
