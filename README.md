@@ -12,7 +12,7 @@ _Example Usage_
 
 ## Classes
 - **Main** : The main class of the Java Regression Calculator that features a user interface implementation.
-- **Regression** : This class utilizes the normal equation *(X^T X)^(-1) X^T y* to calculate a linear regression.
+- **Regression** : This class utilizes the normal equation *(X<sup>T</sup> X)<sup>-1</sup> X<sup>T</sup> y* to calculate a linear regression.
 - **Matrix** : Matrix class has implementations for the matrix operations to be used in the regression calculation.
 
 ## Planned Changes
