@@ -4,10 +4,10 @@
 Java Regression Calculator is a linear regression calculator that uses the normal equation. It also has a feature to include power terms.
 
 ## Screenshots
-![Default Screenshot](screenshots/default.png)
+![Default Screenshot](screenshots/default.PNG)
 _Default Interface_
 
-![Example Screenshot](screenshots/example.png)
+![Example Screenshot](screenshots/example.PNG)
 _Example Usage_
 
 ## Classes
