@@ -2,6 +2,7 @@
 .classpath
 .project
 .settings/
+src/module-info.java
 
 # Ignore compiled Java classes
 bin/
